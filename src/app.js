@@ -1,5 +1,6 @@
 import express from "express";
 import connectDatabase from "./config/dbConnect.js";
+import book from "./models/Book.js";
 
 const connection = await connectDatabase();
 
@@ -40,8 +41,9 @@ app.get("/", (req, res) => {
     res.status(200).send("Curso de node.js");
 });
 
-app.get("/books", (req, res) => {
-    res.status(200).json(books);
+ app.get("/books", async (req, res) => {
+    const bookList = await book.find({});
+    res.status(200).json(bookList);
 });
 
 app.get("/books/:id", (req, res) => {
@@ -63,8 +65,10 @@ app.delete("/books/:id", (req, res) => {
 
 });
 
-app.post("/books", (req, res) => {
-    books.push(req.body);
+app.post("/books", async (req, res) => {
+    const bookList = await book.find({});
+
+    bookList.push(req.body);
     res.status(201).send("Book registered successfully")
 });
 
