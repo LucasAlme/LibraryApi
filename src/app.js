@@ -1,4 +1,15 @@
 import express from "express";
+import connectDatabase from "./config/dbConnect.js";
+
+const connection = await connectDatabase();
+
+connection.on("error", (error) => {
+    console.error("Error", error);
+});
+
+connection.once("open", () => { 
+    console.log("Connection Succesfuly");
+});
 
 const app = express();
 app.use(express.json());
@@ -60,3 +71,5 @@ app.post("/books", (req, res) => {
 
 
 export default app;
+
+
